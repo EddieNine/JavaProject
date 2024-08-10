@@ -1,3 +1,5 @@
+package EstruturasDeDados.Arrays;
+
 import java.util.Arrays;
 
 public class ArrayManipulation {

@@ -1,3 +1,5 @@
+package EstruturasDeDados.Arrays;
+
 public class ArrayExample {
     public static void main(String[] args) {
         // Declaração e inicialização de um array
