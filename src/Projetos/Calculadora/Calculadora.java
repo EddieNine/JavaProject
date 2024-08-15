@@ -41,13 +41,13 @@ public class Calculadora extends JFrame implements ActionListener {
 
         // Painel para os botões
         panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 4, 10, 10));
+        panel.setLayout(new GridLayout(5, 4, 10, 10));
         String[] buttonLabels = {
                 "7", "8", "9", "/",
                 "4", "5", "6", "*",
                 "1", "2", "3", "-",
                 "0", ".", "=", "+",
-                "C", "←", "%"
+                "C", "←", "%", ""
         };
 
         for (String label : buttonLabels) {
