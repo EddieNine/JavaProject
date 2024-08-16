@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Calculadora extends JFrame implements ActionListener {
 
@@ -14,6 +16,10 @@ public class Calculadora extends JFrame implements ActionListener {
     private JPanel panel;
 
     public Calculadora() {
+        // Icone do panel
+        ImageIcon icon = new ImageIcon("src/Projetos/Calculadora/calculator.png");
+        setIconImage(icon.getImage());
+
         setTitle("Calculadora");
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +48,8 @@ public class Calculadora extends JFrame implements ActionListener {
         // Painel para os botões
         panel = new JPanel();
         panel.setLayout(new GridLayout(5, 4, 10, 10));
+
+
         String[] buttonLabels = {
                 "C", "←", "%", "÷",
                 "7", "8", "9", "x",
@@ -59,16 +67,16 @@ public class Calculadora extends JFrame implements ActionListener {
             final Color[] originalColor = {button.getBackground()};
 
             // Configurando o efeito de hover de forma simplificada
-            button.addMouseListener(new java.awt.event.MouseAdapter() {
+            button.addMouseListener(new MouseAdapter() {
 
                 @Override
-                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                public void mouseEntered(MouseEvent evt) {
                     originalColor[0] = button.getBackground(); // Salva a cor original
                     button.setBackground(originalColor[0].darker()); // Escurece a cor ao passar o mouse
                 }
 
                 @Override
-                public void mouseExited(java.awt.event.MouseEvent evt) {
+                public void mouseExited(MouseEvent evt) {
                     button.setBackground(originalColor[0]); // Restaura a cor original ao sair o mouse
                 }
             });
