@@ -43,11 +43,11 @@ public class Calculadora extends JFrame implements ActionListener {
         panel = new JPanel();
         panel.setLayout(new GridLayout(5, 4, 10, 10));
         String[] buttonLabels = {
-                "7", "8", "9", "/",
-                "4", "5", "6", "*",
-                "1", "2", "3", "-",
-                "0", ".", "=", "+",
-                "C", "←", "%", ""
+                "C", "←", "%", "÷",
+                "7", "8", "9", "x",
+                "4", "5", "6", "-",
+                "1", "2", "3", "+",
+                "0", ".", "", "="
         };
 
         for (String label : buttonLabels) {
@@ -103,8 +103,7 @@ public class Calculadora extends JFrame implements ActionListener {
             textField.setForeground(Color.BLACK);
             panel.setBackground(Color.LIGHT_GRAY);
             for (Component component : panel.getComponents()) {
-                if (component instanceof JButton) {
-                    JButton button = (JButton) component;
+                if (component instanceof JButton button) {
                     button.setBackground(new Color(45, 45, 45));
                     button.setForeground(Color.WHITE);
                 }
@@ -115,8 +114,7 @@ public class Calculadora extends JFrame implements ActionListener {
             textField.setForeground(Color.BLACK);
             panel.setBackground(Color.WHITE);
             for (Component component : panel.getComponents()) {
-                if (component instanceof JButton) {
-                    JButton button = (JButton) component;
+                if (component instanceof JButton button) {
                     button.setBackground(new Color(220, 220, 220));
                     button.setForeground(Color.BLACK);
                 }
@@ -155,10 +153,10 @@ public class Calculadora extends JFrame implements ActionListener {
                 case '-':
                     result = num1 - num2;
                     break;
-                case '*':
+                case 'x':
                     result = num1 * num2;
                     break;
-                case '/':
+                case '÷':
                     if (num2 == 0) {
                         JOptionPane.showMessageDialog(this, "Não é possível dividir por 0", "Erro", JOptionPane.ERROR_MESSAGE);
                         return;
