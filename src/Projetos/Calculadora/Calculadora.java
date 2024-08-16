@@ -1,11 +1,15 @@
 package Projetos.Calculadora;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class Calculadora extends JFrame implements ActionListener {
 
@@ -83,6 +87,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
             // Adicionando animação ao clique do botão
             button.addActionListener(e -> {
+                playSound("src/Projetos/Calculadora/mouseclick.wav"); // Chama o método para reproduzir o som
                 Color clickColor = new Color(100, 100, 100);
                 button.setBackground(clickColor);
                 Timer clickTimer = new Timer(150, new ActionListener() {
@@ -182,6 +187,17 @@ public class Calculadora extends JFrame implements ActionListener {
                 operator = command.charAt(0);
                 textField.setText("");
             }
+        }
+    }
+
+    public void playSound(String soundFile) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFile).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Erro ao reproduzir som: " + e.getMessage());
         }
     }
 
