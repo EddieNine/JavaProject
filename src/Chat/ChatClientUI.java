@@ -3,11 +3,8 @@ package Chat;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -27,22 +24,20 @@ public class ChatClientUI extends Application{
 
     @Override
     public void start(Stage primaryStage) {
-        // Configuração da interface gráfica
-        messages = new ListView<>();
-        inputField = new TextField();
-        inputField.setPromptText("Digite sua mensagem aqui...");
+        // Criando componentes
+        Label label = new Label("Mensagem:");
+        TextField textField = new TextField();
+        Button button = new Button("Enviar");
+        TextArea chatArea = new TextArea();
 
-        Button sendButton = new Button("Enviar");
-        sendButton.setOnAction(event -> sendMessage());
+        // Configurando o layout
+        VBox root = new VBox(10, chatArea, label, textField, button);
+        root.setPadding(new Insets(20));
 
-        HBox inputBox = new HBox(10, inputField, sendButton);
-        inputBox.setPadding(new Insets(10));
-
-        BorderPane root = new BorderPane();
-        root.setCenter(messages);
-        root.setBottom(inputBox);
-
+        // Criando uma cena e aplicando o CSS
         Scene scene = new Scene(root, 400, 300);
+        scene.getStylesheets().add(getClass().getResource("/chat/css/styles.css").toExternalForm());
+
         primaryStage.setTitle("Chat Cliente");
         primaryStage.setScene(scene);
         primaryStage.show();
