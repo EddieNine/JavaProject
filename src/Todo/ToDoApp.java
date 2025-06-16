@@ -2,8 +2,7 @@ package Todo;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.*;
 
 public class ToDoApp extends JFrame {
@@ -20,13 +19,34 @@ public class ToDoApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Look and Feel
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ignored) {}
+
         listModel = new DefaultListModel<>();
         taskList = new JList<>(listModel);
+        taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        taskList.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // Editar tarefa com duplo clique
+        taskList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int index = taskList.locationToIndex(evt.getPoint());
+                    String newValue = JOptionPane.showInputDialog("Edit Task", listModel.get(index));
+                    if (newValue != null && !newValue.trim().isEmpty()) {
+                        listModel.set(index, newValue.trim());
+                        saveTasks();
+                    }
+                }
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(taskList);
         add(scrollPane, BorderLayout.CENTER);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
+        JPanel panel = new JPanel(new FlowLayout());
 
         taskField = new JTextField(20);
         panel.add(taskField);
@@ -39,13 +59,20 @@ public class ToDoApp extends JFrame {
         removeButton.addActionListener(new RemoveTaskAction());
         panel.add(removeButton);
 
-        markDoneButton = new JButton("Mark as done");
+        markDoneButton = new JButton("Mark as Done");
         markDoneButton.addActionListener(new MarkDoneAction());
         panel.add(markDoneButton);
 
         add(panel, BorderLayout.SOUTH);
 
         loadTasks();
+
+        // Salvar ao fechar
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                saveTasks();
+            }
+        });
     }
 
     private void loadTasks() {
@@ -79,14 +106,19 @@ public class ToDoApp extends JFrame {
             e.printStackTrace();
         }
     }
+
     private class AddTaskAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String task = taskField.getText();
-            if(!task.isEmpty()) {
-                listModel.addElement(task);
-                taskField.setText("");
-                saveTasks();
+            String task = taskField.getText().trim();
+            if (!task.isEmpty()) {
+                if (!listModel.contains(task)) {
+                    listModel.addElement(task);
+                    taskField.setText("");
+                    saveTasks();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Essa tarefa já existe!");
+                }
             }
         }
     }
@@ -95,9 +127,14 @@ public class ToDoApp extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             int selectedIndex = taskList.getSelectedIndex();
-            if(selectedIndex != -1) {
-                listModel.remove(selectedIndex);
-                saveTasks();
+            if (selectedIndex != -1) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        null, "Deseja remover esta tarefa?", "Confirmar remoção", JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    listModel.remove(selectedIndex);
+                    saveTasks();
+                }
             }
         }
     }
@@ -108,8 +145,10 @@ public class ToDoApp extends JFrame {
             int selectedIndex = taskList.getSelectedIndex();
             if (selectedIndex != -1) {
                 String task = listModel.getElementAt(selectedIndex);
-                listModel.set(selectedIndex, task + " (Done)");
-                saveTasks();
+                if (!task.endsWith(" (Done)")) {
+                    listModel.set(selectedIndex, task + " (Done)");
+                    saveTasks();
+                }
             }
         }
     }
